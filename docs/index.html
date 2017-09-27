@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Simon</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://mikeike24.github.io/simon-game/main.css">
+</head>
+
+<body scroll="no" onclick="">
+  <h1 class="title center">The Game of Simon</h1>
+  <div class="game-contain">
+    <div class="outer-circle">
+      <div class="inner-game">
+        <div class="color-buttons">
+          <div id="0" class="green btn 0" onclick="gameControls.btnClick(`green`)"></div>
+          <div id="1" class="red btn 1" onclick="gameControls.btnClick(`red`)"></div>
+          <div id="2" class="yellow btn 2" onclick="gameControls.btnClick(`yellow`)"></div>
+          <div id="3" class="blue btn 3" onclick="gameControls.btnClick(`blue`)"></div>
+        </div>
+        <div class="inner-circle-outline">
+          <div class="inner-circle">
+
+            <div class="name center">
+              Simon <span class="reg">&reg;</span>
+            </div>
+            <div class="inner-middle-row">
+              <div class="count-contain">
+                <div class="space"></div>
+                <div class="count-outer">
+                  <div class="count-inner">
+                    <div class="count-text">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="count-label label center">COUNT</div>
+              </div>
+              <div class="start-contain">
+                <div class="is-on start-light"></div>
+                <div class="action-btn">
+                  <div class="outer-btn">
+                    <div class="inner-btn start" onclick="startControls.startClick()"></div>
+                  </div>
+                </div>
+                <div id="start" class="start-label label center">START</div>
+              </div>
+              <div class="strict-contain">
+                <div class="is-on strict-light"></div>
+                <div class="action-btn">
+                  <div class="outer-btn">
+                    <div class="inner-btn strict" onclick="gameControls.strictClick()"></div>
+                  </div>
+                </div>
+                <div class="strict-label label center">STRICT</div>
+              </div>
+            </div>
+            <div class="on-off-contain">
+              <div class="on label center on-off">OFF</div>
+              <div class="switch-outside">
+                <div class="switch" onclick="switchControls.onToggle()">
+                  <div class="line"></div>
+                  <div class="line"></div>
+                </div>
+              </div>
+              <div class="off label center on-off">ON</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <audio id="s0">
+      <source  src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3" type="audio/mpeg">
+    </audio>
+      <audio id="s1">
+      <source src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3" type="audio/mpeg">
+    </audio>
+      <audio id="s2">
+      <source src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3" type="audio/mpeg">
+    </audio>
+      <audio id="s3">
+      <source src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" type="audio/mpeg">
+    </audio>
+    <script src="https://mikeike24.github.io/simon-game/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+
+</html>
