@@ -65,5 +65,4 @@ gulp.task('watch', function() {
 });
 
 // run all tasks
-gulp.task('default', ['css','watch']);
-;
+gulp.task('default', ['css','ts','watch']);

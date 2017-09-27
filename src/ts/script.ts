@@ -1,344 +1,251 @@
-class GameLogic {
-    chancesLeft: number;
-    strictMode: boolean;
-    strictButtonLight: any;
-    currentTurn: string = 'computer';
-    totalCount: number = 0;
-    userCount: number = 0;
-    userCountCheck: number = 0;
-    colorSequence: number[] = [randomNumber()];
-    playerChoice: number;
-    playerTimeout: any;
-    playerInterval: any;
-    allowPushNum: boolean = true;
-    constructor(strictMode: boolean) {
-        this.strictMode = strictMode;
-        this.chancesLeft = strictMode ? 0 : 1;
-        this.strictButtonLight = document.getElementsByClassName('strict-light');
+
+  
+  class ConvertedBoolText {
+    activeText = "";
+    allowAnd: boolean = true;
+    activeSource: string;
+    
+    constructor(text:string, source:string) {
+      this.activeText = this.general(text);
+      this.activeSource = "agentEM";
+      this.activeSource = source;
     }
-    gameReset() {
-        clearTimeout(gameControls.playerTimeout);
-        clearInterval(gameControls.playerInterval);
-    }
-    gameOver() {
-        this.gameReset();
-        this.constructor(this.strictMode);
-        this.currentTurn = 'computer';
-        this.totalCount = 0;
-        this.userCount = 0;
-        this.userCountCheck = 0;
-        this.colorSequence = [randomNumber()];
-        this.playerChoice;
-        this.allowPushNum = true;
-        changeCountText('0');
-        document.getElementById('start').innerText = 'START';
-    }
-    loseLife() {
-        if (this.chancesLeft === 1) {
-            this.chancesLeft -= 1;
-            this.totalCount -= 1;
-            this.colorSequence = this.colorSequence.slice(0, length - 1);
-            this.currentTurn = 'computer';
-            this.allowPushNum = false;
-            this.gameReset();
-            alert('Lucky you, you get another chance!')
-            setTimeout(function () {
-                gameControls.logic();
-            }, 500);
-        } else {
-            alert('Sorry, Game Over!');
-            this.gameOver();
+      
+    general(text:string) {
+      let textCopy = text;
+      for (let i = 0; i < text.length; i++) {
+        if (text.charAt(i) == "(" || text.charAt(i) == "[") {
+          this.allowAnd = false;
+        } else if (text.charAt(i) === ")" || text.charAt(i) == "]") {
+          this.allowAnd = true;
+        } else if (text.charAt(i) === " ") {
+          if (text.charAt(i + 1) === "-") {
+            let replaceString = "NOT ";
+            text = setCharAt(text, i + 1, replaceString);
+            i = i + replaceString.length;
+          } else if (this.allowAnd) {
+            let replaceString = " AND ";
+            text = setCharAt(text, i, replaceString);
+            i = i + replaceString.length - 1;
+          }
         }
-    }
-    strictClick() {
-        if (switchControls.onSwitch) {
-            if (!this.strictMode) {
-                this.chancesLeft = 0;
-                this.strictMode = !this.strictMode;
-                this.strictButtonLight[0].style.filter = 'brightness(1.9)';
-            } else {
-                this.chancesLeft = 1;
-                this.strictMode = !this.strictMode;
-                this.strictButtonLight[0].style.filter = 'brightness(0.6)';
-            }
-        }
-    }
-    btnClick(color: string) {
-        if (startControls.startButtonOn && this.currentTurn === 'user') {
-            this.playerChoice = colorToNum(color);
-            playAudio(this.playerChoice);
-            this.userCount += 1;
-
-        }
-    }
-    switchTurn() {
-        this.currentTurn = this.currentTurn === 'computer' ? 'user' : 'computer';
-    }
-    gameWon() {
-        alert('Congratulations, you won!');
-        this.gameOver();
-    }
-    logic() {
-
-        if (this.currentTurn === 'computer') {
-            clearInterval(gameControls.playerInterval);
-            this.totalCount += 1;
-            if (this.totalCount >= 21) {
-                this.gameWon();
-                return;
-            }
-            changeCountText(this.totalCount.toString());
-            removeClasses(['btn']);
-            gameTiming(this.totalCount);
-        } else {
-            //addClickEvents(['green','red','blue','yellow']);
-
-
-            this.userCountCheck = this.userCount;
-            let iter = 0;
-            this.playerTimeout = setTimeout(function () {
-                gameControls.loseLife();
-            }, 5000);
-            this.playerInterval = setInterval(function () {
-                if (gameControls.userCountCheck !== gameControls.userCount) {
-                    // TODO FIX TIMER
-                    if (gameControls.playerChoice == gameControls.colorSequence[iter]) {
-                        iter++;
-                        gameControls.userCountCheck = gameControls.userCount;
-                        clearTimeout(gameControls.playerTimeout);
-                        gameControls.playerTimeout;
-                        if (gameControls.totalCount === iter) {
-                            setTimeout(function () {
-                                gameControls.currentTurn = 'computer';
-                                clearTimeout(gameControls.playerTimeout);
-                                gameControls.logic();
-                            }, 1000);
-
-                        }
-                    } else {
-                        gameControls.loseLife();
-                    }
-                }
-
-            }, 100);
-
-        }
-
-
-    }
-}
-
-class SwitchLogic {
-    onSwitch: boolean = false;
-    startLight: boolean = false;
-    strictLight: boolean = false;
-    switch: any;
-    onToggle() {
-        this.onSwitch = !this.onSwitch;
-        this.switch = document.getElementsByClassName('switch');
-        if (this.onSwitch) {
-            this.switch[0].style.transition = 'left 0.5s ease';
-            this.switch[0].style.left = '1.8rem';
-            turningOnSequence();
-        } else {
-            this.switch[0].style.transition = 'left 0.5s ease';
-            this.switch[0].style.left = '0.4rem';
-            turningOffSequence();
-        }
-    }
-}
-
-class StartButtonLogic {
-    startButtonLight: any;
-    startButtonOn: boolean = false;
-    ongoingGame: boolean = false;
-    startClick() {
-        if (switchControls.onSwitch) {
-            if (!this.startButtonOn) {
-                this.startButtonOn = true;
-                this.startButtonLight = document.getElementsByClassName('start-light');
-                this.startButtonLight[0].style.filter = 'brightness(1.9)';
-                changeCountText('0');
-                document.getElementById('start').innerText = 'RESTART';
-                gameControls.logic();
-            } else {
-                changeCountText('0');
-                gameControls.gameOver();
-                gameControls.logic();
-            }
-        }
-    }
-}
-
-function turningOffSequence() {
-    if (startControls.startButtonLight) {
-        startControls.startButtonOn = false;
-        startControls.startButtonLight[0].style.filter = 'brightness(0.6)';
-        gameControls.strictButtonLight[0].style.filter = 'brightness(0.6)';
-    }
-    removeClasses(['btn', 'inner-btn']);
-    gameControls.gameOver();
-    clearTimeout;
-    changeCountText('');
-
-}
-
-function turningOnSequence() {
-    addClasses(['btn', 'inner-btn']);
-    changeCountText('--');
-    gameControls.gameOver();
-    gameControls.gameReset();
-}
-
-function changeCountText(text: string) {
-    let count = document.getElementsByClassName('count-text');
-    count[0].textContent = text;
-}
-
-function addClickEvents(classNames: string[]) {
-    for (let j = 0; j < classNames.length; j++) {
-        let element = document.getElementsByClassName(classNames[j]);
-        element[0].setAttribute('onclick', '``');
-    }
-}
-
-function removeClickEvents(classNames: string[]) {
-    for (let j = 0; j < classNames.length; j++) {
-        let element = document.getElementsByClassName(classNames[j]);
-        element[0].setAttribute('onclick', `"gameControls.btnClick('${classNames[j]}'')"`);
-    }
-}
-
-function addClasses(classNames: string[]) {
-    for (let j = 0; j < classNames.length; j++) {
-        let elements = document.getElementsByClassName(classNames[j]);
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].classList.add(classNames[j] + 'H');
-        }
-    }
-}
-
-function removeClasses(classNames: string[]) {
-    for (let j = 0; j < classNames.length; j++) {
-        let elements = document.getElementsByClassName(classNames[j]);
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].classList.remove(classNames[j] + 'H');
-        }
-    }
-}
-
-function lastCompPress(): void {
-    gameControls.allowPushNum = true;
-    addClasses(['btn']);
-    gameControls.currentTurn = 'user';
-    gameControls.logic();
-    return null;
-}
-
-function gameTiming(N: number): void {
-    if (N === 0) {
-        return lastCompPress();
-    }
-    if (N === 1 && gameControls.allowPushNum) {
-        let randomNum = randomNumber();
-        gameControls.colorSequence.push(randomNum);
-        //playAudio(randomNum);
-    }
-    let flippedSeq = (gameControls.colorSequence);
-    let elNum = flippedSeq[gameControls.totalCount - (N)];
-    if (elNum === undefined) {
-        return lastCompPress();
-    }
-    let el = document.getElementById(String(elNum));
-
-    el.classList.add('btn-comp-click');
-    playAudio(elNum);
-
-    setTimeout(function () {
-        el.classList.remove('btn-comp-click');
-    }, 500);
-    setTimeout(function () {
-        gameTiming(N - 1);
-    }, 1000);
-}
-
-function randomNumber() {
-    return Math.floor((Math.random() * 4) + 1) - 1;
-}
-
-function colorToNum(c: string) {
-    switch (c) {
-        case 'green':
-            return 0;
-        case 'red':
-            return 1;
-        case 'yellow':
-            return 2;
-        case 'blue':
-            return 3;
-        default:
-            alert('Something went wrong');
+      }
+  
+      // if 'or' is in lowercase, convert to uppercase
+      text = text.replace(/\sor\s/g, " OR ");
+      
+      if (formSettings.radioSelection !== "agentEM") {
+        let reOr = /\(([^()]+)\)/g;
+        
+        text = text.replace(reOr, orAdder);
+        
+        let re = /\[([a-zA-Z0-9-\s\*]+)\]/g;
+        switch (formSettings.radioSelection) {
+          case "monster":
+            text = text.replace(re, this.monster);
             break;
+          case "careerBuilder":
+            text = text.replace(re, this.careerBuilder);
+            break;
+          case "dice":
+            text = text.replace(re, this.dice);
+            break;
+        }
+      }
+      else{
+        return textCopy;
+      }
+      
+      text = text.replace('_',' ');
+      return text;
     }
-}
-
-function playAudio(colorId: number) {
-    let x = document.getElementById('s' + colorId.toString());
-    x.play().catch((error: any) => {
-        playAudio(colorId);
+    monster(match:string) {
+      return nearAdder(match,formSettings.nearNum,'monster');
+    }
+    careerBuilder(match:string) {
+      return nearAdder(match,formSettings.nearNum,'careerBuilder');
+    }
+    dice(match:string) {
+      return nearAdder(match,formSettings.nearNum,'dice');
+    }
+  
+  }
+  class FormSettings {
+    radioSelection: string = "agentEM";
+    nearNum = $('#near-select').find(":selected").text();
+  }
+  /*----------------------------------------*/
+  let formSettings = new FormSettings();
+  modal("#renderPopups", "#settings-btn");
+  
+  $("#boolUpdate").click(function() {
+    let boolText = $("#boolIn").val();
+    let convertedBoolText = new ConvertedBoolText(
+      boolText,
+      formSettings.radioSelection
+    );
+    $("#boolOut").text(convertedBoolText.activeText);
+  });
+  $("#form").submit(function(e) {
+    e.preventDefault();
+  });
+  
+  $("#form input").on("change", function() {
+    formSettings.radioSelection = $("input[name=sources]:checked", "#form").val();
+  });
+  
+  $('#near-select').on("change",function(){
+    formSettings.nearNum = $('#near-select').find(":selected").text();
+    document.getElementById('boolUpdate').click();
+  });
+  
+  new Clipboard('#boolOut');
+  $('#boolOut').click(function(){
+    if($('#boolOut').text()){
+    $('#copiedInfo').html(`<div class="alert alert-success text-center">
+    <strong>Success!</strong> Text copied to clipboard.
+  </div>`).fadeIn("slow");
+  setTimeout(function(){
+      $('#copiedInfo').fadeOut("slow");
+    },1500);
+  }
+  });
+  /*----------------------------------------*/
+  function setCharAt(str, index, chr) {
+    if (index > str.length - 1) return str;
+    return str.substr(0, index) + chr + str.substr(index + 1);
+  }
+  
+  function nearAdder(match:string,nearNumber:number,source:string){
+      let innerText = match.slice(1, -1);
+      let innerText = innerText.split(" ");
+      let nearText:string;
+      switch(source){
+        case 'dice':
+          nearText = ` NEAR/${nearNumber} `;
+          break;
+        case 'careerBuilder':
+          nearText = ` NEAR${nearNumber} `;
+          break;
+        default:
+          nearText = ' NEAR ';
+                   }
+      innerText.splice(1, 0,nearText);
+      innerText.push(")");
+      innerText.unshift("(");
+      return innerText.join("");
+    }
+  
+  function orAdder(match:string){
+    return match.replace(new RegExp(' ', 'g'), ' OR ');
+    }
+  
+  function modal(containerDiv, clickTrigger) {
+    var modalOpen = false;
+    $(clickTrigger).on("click", function() {
+      modalOpen = true;
+      let htmlPopup = "";
+      htmlPopup += `<div id="popup">${modalContent()}</div>`;
+      $(containerDiv).html(htmlPopup);
+  
+      var [modalTop, winHeight, topPos] = modalSizing();
+  
+      $(containerDiv).fadeIn(450);
+      $("#popup").animate({ top: modalTop + "px" }, 425);
+  
+      window.onscroll = function() {
+        window.scrollTo(0, topPos);
+      };
+  
+      $(window).resize(function() {
+        [modalTop, winHeight, topPos] = modalSizing(modalOpen);
+      });
+  
+      $("#xButtonPopup").on("click", function() {
+        modalOpen = false;
+        $(window).off("resize");
+        $(containerDiv).fadeOut(450);
+        $("#popup").animate({ top: winHeight + topPos + 10 + "px" }, 425);
+        window.onscroll = function() {};
+      });
     });
-}
-function resizeGameWidth(upperScreenWidth:number,upperFontSize:number,lowerScreenWidth:number,lowerFontSize:number){
-    /* Takes x2,y2,x1,y1 in that order. x is the screen width, y is the font size.
-    Sets the global font size based on a linear relationship*/
-
-    let setFontSize;
-    let x = window.innerWidth;
-    if (x < lowerScreenWidth){
-        return lowerFontSize;
+  }
+  
+  function modalSizing(modalOpen) {
+    var winHeight = $(window).height();
+    var winWidth = $(window).width();
+    var topPos = document.body.scrollTop;
+  
+    var modalHeight = 0.8 * winHeight;
+    var stopGrowing = window.screen.width / 1.5;
+    if (winWidth >= stopGrowing) {
+      var modalWidth = stopGrowing * 0.95;
+    } else {
+      var modalWidth = winWidth * 0.95;
     }
-    else if(x > upperScreenWidth){
-        return upperFontSize;
+    var modalTop = winHeight * 0.5 - modalHeight * 0.5;
+    var modalLeft = winWidth * 0.5 - modalWidth * 0.5;
+    if (modalOpen) {
+      $("#popup").css("top", modalTop + "px");
+    } else {
+      $("#popup").css("top", winHeight + topPos + 10 + "px");
     }
-    else{
-        let slope = (upperFontSize-lowerFontSize)/(upperScreenWidth-lowerScreenWidth);
-        let yint = upperFontSize - (slope * upperScreenWidth);
-        return (slope * x) + yint;
-    } 
-    
-}
-function resizeGameHeight(upperScreenHeight:number,upperFontSize:number,lowerScreenHeight:number,lowerFontSize:number){
-    /* Takes x2,y2,x1,y1 in that order. x is the screen width, y is the font size.
-    Sets the global font size based on a linear relationship*/
-
-    let setFontSize;
-    let y = window.innerHeight;
-    if (y < lowerScreenHeight){
-        return lowerFontSize;
-    }
-    else if(y > upperScreenHeight){
-        return upperFontSize;
-    }
-    else{
-        let slope = (upperFontSize-lowerFontSize)/(upperScreenHeight-lowerScreenHeight);
-        let yint = upperFontSize - (slope * upperScreenHeight);
-        return (slope * y) + yint;
-    } 
-    
-}
-
-function completeResize(){
-let widthFont = resizeGameWidth(600,18,250,8);
-let heightFont = resizeGameHeight(650,18,250,8);
-let setFontSize = widthFont < heightFont ? widthFont:heightFont;
-document.documentElement.style.fontSize = (`${setFontSize}px`);
-}
-
-let gameControls = new GameLogic(false);
-let switchControls = new SwitchLogic();
-let startControls = new StartButtonLogic();
-completeResize();
-window.addEventListener('resize',function(){
-completeResize();
-});
-//removeClickEvents(['green','red','blue','yellow']);
+    $("#popup").css("left", modalLeft + "px");
+    $("#popup").css("height", modalHeight + "px");
+    $("#popup").css("width", modalWidth + "px");
+  
+    return [modalTop, winHeight, topPos];
+  }
+  
+  function modalContent() {
+    let html = "";
+    html += `
+      <div class="modal-header">
+        <div class="modal-top-sizing"></div>
+        <div class="modal-title">
+          Settings
+        </div>
+        <div id="xButtonPopup" class="modal-top-sizing">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="modal-body">
+      <h4 class="text-center">Instructions:</h4>
+  <br>
+  <ul>
+  <li class="inst-li"><b>To add an "AND" just add a space.</b>
+  <br>
+   Ex: Java Sql Oracle = Java AND Sql AND Oracle</li>
+  <div class="hor-line"></div>
+  <li class="inst-li"><b>To add an "OR" just add a space between words inside parenthesis.</b>
+  <br>
+   Ex: (Java Sql) Oracle = (Java OR Sql) AND Oracle</li>
+  <div class="hor-line"></div>
+  <li class="inst-li"><b>To add a "NOT" just add a minus sign before the word to be ommitted.</b>
+  <br>
+   Ex: Java Sql -Oracle = Java AND Sql NOT Oracle</li>
+  <div class="hor-line"></div>
+  <li class="inst-li"><b>Use quotes to find an exact match.</b>
+  <br>
+  Ex: "develop" matches "develop" but not "developers"</li>
+  <div class="hor-line"></div>
+  <li class="inst-li"><b>Use an asterisk to match anything after what's typed.</b>
+  <br>
+  Ex: "devel*" matches "develop" and "developers"</li>
+  <div class="hor-line"></div>
+  <div class="hor-line"></div>
+  <li class="inst-li"><b>Use two words inside of brackets to perform proximity searches.</b>
+  <br>
+  <b>Use the optional proximity selectors to set the max word separation count.</b>
+  <br>
+  Monster Ex: [sql developer] = sql NEAR developer
+  <br>
+  Career Builder Ex: [sql developer] = sql NEAR3 developer
+  <br>
+  Dice Ex: [sql developer] = sql NEAR/3 developer
+  </li>
+  </ul>
+     </div>
+  `;
+    return html;
+  }
