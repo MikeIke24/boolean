@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Boolean</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
+  <link rel="stylesheet" href=".\boolean\dist\css\main.css">
+</head>
+
+<body scroll="no" onclick="">
+    <div id="renderPopups"></div>
+    <div class="container">
+      <div class="top-row">
+        <span class="top-btn-size"></span>
+      <h1 class="text-center">Boolean Generator and Converter</h1>
+      <button id="settings-btn" class="btn btn-info top-btn-size"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
+          </div>
+      <form id="form" class="form-group" onsubmit="false">
+        <input class="form-control" type="text" id="boolIn" />
+  <div class="selection-row">
+    <div class="radio-column">
+        <div class="radio">
+          <label><input type="radio" name="sources" value="agentEM" id="agentEM" checked>AgentEM</label>
+        </div>
+  
+        <div class="radio">
+          <label><input type="radio" name="sources" value="monster" id="monster">Monster</label>
+        </div>
+  
+        <div class="radio">
+          <label><input type="radio" name="sources" value="careerBuilder" id="careerBuilder">Career Builder</label>
+        </div>
+  
+        <div class="radio">
+          <label><input type="radio" name="sources" value="dice" id="dice">Dice</label>
+        </div>
+    </div>
+    <div class="dropdown-column form-group">
+      <label for="near-select">Proximity Limit:</label>
+      <select class="form-control" id="near-select">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option selected="selected" value="3">3</option>
+    <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+  </select>
+    </div>
+        </div>
+        <button id="boolUpdate" class="form-control btn btn-primary">Convert</button>
+      </form>
+      <hr>
+      <div class="text-center"><h2>Converted Boolean String <i class="fa fa-caret-down" aria-hidden="true"></i></h2></div>
+      <div class="text-center">Click Inside Box to Copy Text</div>
+      <br>
+      <div id="copiedInfo"></div>
+      <div id="boolOut" data-clipboard-target="#boolOut"></div>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src=".\boolean\dist\js\script.js"></script>
+</body>
+
+</html>
