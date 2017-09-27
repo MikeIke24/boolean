@@ -3,89 +3,67 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Simon</title>
+  <title>Boolean</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://mikeike24.github.io/simon-game/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
+  <link rel="stylesheet" href=".\boolean\dist\css\main.css">
 </head>
 
 <body scroll="no" onclick="">
-  <h1 class="title center">The Game of Simon</h1>
-  <div class="game-contain">
-    <div class="outer-circle">
-      <div class="inner-game">
-        <div class="color-buttons">
-          <div id="0" class="green btn 0" onclick="gameControls.btnClick(`green`)"></div>
-          <div id="1" class="red btn 1" onclick="gameControls.btnClick(`red`)"></div>
-          <div id="2" class="yellow btn 2" onclick="gameControls.btnClick(`yellow`)"></div>
-          <div id="3" class="blue btn 3" onclick="gameControls.btnClick(`blue`)"></div>
-        </div>
-        <div class="inner-circle-outline">
-          <div class="inner-circle">
-
-            <div class="name center">
-              Simon <span class="reg">&reg;</span>
-            </div>
-            <div class="inner-middle-row">
-              <div class="count-contain">
-                <div class="space"></div>
-                <div class="count-outer">
-                  <div class="count-inner">
-                    <div class="count-text">
-
-                    </div>
-                  </div>
-                </div>
-                <div class="count-label label center">COUNT</div>
-              </div>
-              <div class="start-contain">
-                <div class="is-on start-light"></div>
-                <div class="action-btn">
-                  <div class="outer-btn">
-                    <div class="inner-btn start" onclick="startControls.startClick()"></div>
-                  </div>
-                </div>
-                <div id="start" class="start-label label center">START</div>
-              </div>
-              <div class="strict-contain">
-                <div class="is-on strict-light"></div>
-                <div class="action-btn">
-                  <div class="outer-btn">
-                    <div class="inner-btn strict" onclick="gameControls.strictClick()"></div>
-                  </div>
-                </div>
-                <div class="strict-label label center">STRICT</div>
-              </div>
-            </div>
-            <div class="on-off-contain">
-              <div class="on label center on-off">OFF</div>
-              <div class="switch-outside">
-                <div class="switch" onclick="switchControls.onToggle()">
-                  <div class="line"></div>
-                  <div class="line"></div>
-                </div>
-              </div>
-              <div class="off label center on-off">ON</div>
-            </div>
+    <div id="renderPopups"></div>
+    <div class="container">
+      <div class="top-row">
+        <span class="top-btn-size"></span>
+      <h1 class="text-center">Boolean Generator and Converter</h1>
+      <button id="settings-btn" class="btn btn-info top-btn-size"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
           </div>
-
+      <form id="form" class="form-group" onsubmit="false">
+        <input class="form-control" type="text" id="boolIn" />
+  <div class="selection-row">
+    <div class="radio-column">
+        <div class="radio">
+          <label><input type="radio" name="sources" value="agentEM" id="agentEM" checked>AgentEM</label>
         </div>
-      </div>
+  
+        <div class="radio">
+          <label><input type="radio" name="sources" value="monster" id="monster">Monster</label>
+        </div>
+  
+        <div class="radio">
+          <label><input type="radio" name="sources" value="careerBuilder" id="careerBuilder">Career Builder</label>
+        </div>
+  
+        <div class="radio">
+          <label><input type="radio" name="sources" value="dice" id="dice">Dice</label>
+        </div>
     </div>
-    <audio id="s0">
-      <source  src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3" type="audio/mpeg">
-    </audio>
-      <audio id="s1">
-      <source src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3" type="audio/mpeg">
-    </audio>
-      <audio id="s2">
-      <source src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3" type="audio/mpeg">
-    </audio>
-      <audio id="s3">
-      <source src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3" type="audio/mpeg">
-    </audio>
-    <script src="https://mikeike24.github.io/simon-game/script.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <div class="dropdown-column form-group">
+      <label for="near-select">Proximity Limit:</label>
+      <select class="form-control" id="near-select">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option selected="selected" value="3">3</option>
+    <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+  </select>
+    </div>
+        </div>
+        <button id="boolUpdate" class="form-control btn btn-primary">Convert</button>
+      </form>
+      <hr>
+      <div class="text-center"><h2>Converted Boolean String <i class="fa fa-caret-down" aria-hidden="true"></i></h2></div>
+      <div class="text-center">Click Inside Box to Copy Text</div>
+      <br>
+      <div id="copiedInfo"></div>
+      <div id="boolOut" data-clipboard-target="#boolOut"></div>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src=".\boolean\dist\js\script.js"></script>
 </body>
 
 </html>

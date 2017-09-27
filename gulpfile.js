@@ -16,7 +16,7 @@ var
   // folders
   folder = {
     src: 'src/',
-    build: 'build/'
+    dist: 'dist/'
   }
 
   // CSS processing
@@ -40,7 +40,7 @@ gulp.task('css', function() {
       errLogToConsole: true
     }))
     .pipe(postcss(postCssOpts))
-    .pipe(gulp.dest(folder.build + 'css/'));
+    .pipe(gulp.dest(folder.dist + 'css/'));
 
 });
 
@@ -51,7 +51,7 @@ gulp.task('ts', function () {
             noImplicitAny: true,
             outFile: 'script.js'
         }))
-        .pipe(gulp.dest(folder.build + 'js/'));
+        .pipe(gulp.dest(folder.dist + 'js/'));
 });
 
 // watch for changes
