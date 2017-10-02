@@ -105,7 +105,7 @@ function setCharAt(str, index, chr) {
 }
 function nearAdder(match, nearNumber, source) {
     var innerText = match.slice(1, -1);
-    var innerText = innerText.split(" ");
+    var innerTextSplit = innerText.split(" ");
     var nearText;
     switch (source) {
         case 'dice':
@@ -117,10 +117,10 @@ function nearAdder(match, nearNumber, source) {
         default:
             nearText = ' NEAR ';
     }
-    innerText.splice(1, 0, nearText);
-    innerText.push(")");
-    innerText.unshift("(");
-    return innerText.join("");
+    innerTextSplit.splice(1, 0, nearText);
+    innerTextSplit.push(")");
+    innerTextSplit.unshift("(");
+    return innerTextSplit.join("");
 }
 function orAdder(match) {
     return match.replace(new RegExp(' ', 'g'), ' OR ');
@@ -132,7 +132,7 @@ function modal(containerDiv, clickTrigger) {
         var htmlPopup = "";
         htmlPopup += "<div id=\"popup\">" + modalContent() + "</div>";
         $(containerDiv).html(htmlPopup);
-        var _a = modalSizing(), modalTop = _a[0], winHeight = _a[1], topPos = _a[2];
+        var _a = modalSizing(modalOpen), modalTop = _a[0], winHeight = _a[1], topPos = _a[2];
         $(containerDiv).fadeIn(450);
         $("#popup").animate({ top: modalTop + "px" }, 425);
         window.onscroll = function () {

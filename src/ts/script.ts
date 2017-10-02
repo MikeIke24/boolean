@@ -1,4 +1,5 @@
-
+declare var $;
+declare var Clipboard;
   
   class ConvertedBoolText {
     activeText = "";
@@ -118,7 +119,7 @@
   
   function nearAdder(match:string,nearNumber:number,source:string){
       let innerText = match.slice(1, -1);
-      let innerText = innerText.split(" ");
+      let innerTextSplit = innerText.split(" ");
       let nearText:string;
       switch(source){
         case 'dice':
@@ -130,10 +131,10 @@
         default:
           nearText = ' NEAR ';
                    }
-      innerText.splice(1, 0,nearText);
-      innerText.push(")");
-      innerText.unshift("(");
-      return innerText.join("");
+      innerTextSplit.splice(1, 0,nearText);
+      innerTextSplit.push(")");
+      innerTextSplit.unshift("(");
+      return innerTextSplit.join("");
     }
   
   function orAdder(match:string){
@@ -148,7 +149,7 @@
       htmlPopup += `<div id="popup">${modalContent()}</div>`;
       $(containerDiv).html(htmlPopup);
   
-      var [modalTop, winHeight, topPos] = modalSizing();
+      var [modalTop, winHeight, topPos] = modalSizing(modalOpen);
   
       $(containerDiv).fadeIn(450);
       $("#popup").animate({ top: modalTop + "px" }, 425);
